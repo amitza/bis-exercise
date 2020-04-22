@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  server:
+    image: server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    restart: on-failure # will restart in case rabbitmq or elasticseach arent available yet
+    environment: 
+      - RABBIT_HOST=rabbitmq
+  client:
+    image: client
+    build:
+      context: client
+      dockerfile: Dockerfile
+    restart: on-failure # will restart in case rabbitmq or elasticseach arent available yet
+    environment: 
+      - RABBIT_HOST=rabbitmq
+  rabbitmq:
+    image: 'rabbitmq:3.8'
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  elasticsearch:
+    image: elasticsearch:7.6.2
+    container_name: elasticsearch
+    ports: 
+      - '9200:9200'
+    environment: 
+      - discovery.type=single-node

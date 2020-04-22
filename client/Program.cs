@@ -9,7 +9,8 @@ namespace client
     {
         static void Main(string[] args)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var rabbitmqHost = Environment.GetEnvironmentVariable("RABBIT_HOST") ?? "localhost";
+            var factory = new ConnectionFactory() { HostName = rabbitmqHost };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {

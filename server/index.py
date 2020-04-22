@@ -1,10 +1,13 @@
 import pika
 import uuid
+import os
 from datetime import datetime
 from elasticsearch import Elasticsearch
 
+rabbitmq_host = os.environ.get('RABBIT_HOST', "localhost")
+
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+    pika.ConnectionParameters(host=rabbitmq_host))
 channel = connection.channel()
 
 channel.queue_declare(queue='hello')
